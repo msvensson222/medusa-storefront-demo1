@@ -4,6 +4,7 @@ import useToggleState from "@lib/hooks/use-toggle-state"
 import { useRegions } from "medusa-react"
 import { Fragment, useEffect, useMemo, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
+import { mapCountryToLanguage } from "@lib/search-client"
 
 type CountryOption = {
   country: string
@@ -23,7 +24,7 @@ const CountrySelect = () => {
         return r.countries.map((c) => ({
           country: c.iso_2,
           region: r.id,
-          label: c.display_name,
+          label: mapCountryToLanguage(c.display_name),
         }))
       })
       .flat()
@@ -53,7 +54,7 @@ const CountrySelect = () => {
       >
         <Listbox.Button className="py-1 w-full">
           <div className="text-small-regular flex items-center gap-x-2 xsmall:justify-end">
-            <span>Shipping to:</span>
+            <span>Search language:</span>
             {current && (
               <span className="text-small-semi flex items-center gap-x-2">
                 <ReactCountryFlag

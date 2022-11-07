@@ -141,12 +141,12 @@ const MainMenu = () => {
                 onClick={setScreenCountry}
               >
                 <span className="sr-only">
-                  Click to select shipping country
+                  Click to select search language
                 </span>
                 <div className="flex items-center gap-x-2">
                   <ReactCountryFlag countryCode={countryCode || "us"} svg />
                   <span className="normal-case">
-                    Shipping to{" "}
+                    Search language{" "}
                     {countries?.find((c) => c.country === countryCode)?.label}
                   </span>
                 </div>

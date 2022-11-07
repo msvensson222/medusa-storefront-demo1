@@ -142,3 +142,34 @@ export const SEARCH_INDEX_NAME =
 
 // export const SEARCH_INDEX_NAME =
 //   process.env.NEXT_PUBLIC_INDEX_NAME || "products"
+
+function mapCountryToLanguage(country: string) {
+  let language: string
+  switch (country) {
+    case 'Sweden':
+      language = 'Swedish'
+      break;
+    case 'United Kingdom':
+      language = 'English'
+      break;
+    case 'Germany':
+      language = 'German'
+      break;
+    case 'Denmark':
+      language = 'Danish'
+      break;
+    case 'France':
+      language = 'French'
+      break;
+    case 'Spain':
+      language = 'Spanish'
+      break;
+    case 'Italy':
+      language = 'Italian'
+      break;
+    default:
+      language = 'English'
+  }
+  return language
+}
+export { mapCountryToLanguage }
