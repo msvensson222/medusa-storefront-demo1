@@ -5,15 +5,53 @@ import { domainToASCII } from "url";
 import { medusaClient } from "@lib/config"
 import { useStore } from "./context/store-context";
 import CountryMenu from "@modules/mobile-menu/components/country-menu";
+import CountrySelect from "@modules/layout/components/country-select"
+import { useRegions } from "medusa-react"
 // import { SearchClient, InstantSearch } from 'instantsearch.js'
 
 export const searchClient = {
   async search(requests: any) { // Any??
-    console.log("-------FULL SEARCH REQUEST-----")
-    console.log(requests)
+    console.log(`Full search request: ${requests}`)
     let query = requests[0].params.query
-    console.log("-------QUERY-----")
-    console.log(query)
+    console.log(`Query: ${query}`)
+    const json_region = localStorage.getItem("medusa_region")
+    console.log(`json_region: ${json_region}`)
+    let region: any
+    if (json_region) {
+      region = JSON.parse(json_region) as { regionId: string; countryCode: string }
+    }
+    // console.log(`Region: ${region}`)
+    console.log(`Country code: ${region.countryCode}`)
+    let languageCode: string
+    switch (region.countryCode) {
+      case 'en':
+        languageCode = 'en'
+        break;
+      case 'se':
+        languageCode = 'sv'
+        break;
+      case 'gb':
+        languageCode = 'en'
+        break;
+      case 'de':
+        languageCode = 'de'
+        break;
+      case 'dk':
+        languageCode = 'da'
+        break;
+      case 'fr':
+        languageCode = 'fr'
+        break;
+      case 'es':
+        languageCode = 'es'
+        break;
+      case 'it':
+        languageCode = 'it'
+        break;
+      default:
+        languageCode = 'en'
+    }
+    //  console.log(useStore())
 
     // const { countryCode } = useStore()
     // console.log(countryCode)
@@ -33,15 +71,14 @@ export const searchClient = {
           indexName: "",
           query: query,
           options: {
-            languageCode: 'en',
+            languageCode: languageCode,
             nProductsToRetrieve: 20
           }
         }
         ),
     }).then(async res => {
-      console.log("LOOOOOK HERE22")
-      // console.log(await res.text())
       let res_json = await res.json()
+      console.log(`Search response:`)
       console.log(res_json)
       return {
         results: [
@@ -65,6 +102,8 @@ export const searchClient = {
     }).then(res => res.json());
   }
 };
+
+
 
 /* // var instantsearch = require('instantsearch.js');
 import instantsearch from "instantsearch.js";
