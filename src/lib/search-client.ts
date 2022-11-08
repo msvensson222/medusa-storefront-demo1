@@ -11,17 +11,17 @@ import { useRegions } from "medusa-react"
 
 export const searchClient = {
   async search(requests: any) { // Any??
-    console.log(`Full search request: ${requests}`)
+    // console.log(`Full search request: ${requests}`)
     let query = requests[0].params.query
-    console.log(`Query: ${query}`)
+    // console.log(`Query: ${query}`)
     const json_region = localStorage.getItem("medusa_region")
-    console.log(`json_region: ${json_region}`)
+    // console.log(`json_region: ${json_region}`)
     let region: any
     if (json_region) {
       region = JSON.parse(json_region) as { regionId: string; countryCode: string }
     }
     // console.log(`Region: ${region}`)
-    console.log(`Country code: ${region.countryCode}`)
+    // console.log(`Country code: ${region.countryCode}`)
     let languageCode: string
     switch (region.countryCode) {
       case 'en':
@@ -51,17 +51,11 @@ export const searchClient = {
       default:
         languageCode = 'en'
     }
-    //  console.log(useStore())
 
-    // const { countryCode } = useStore()
-    // console.log(countryCode)
-    // const medusa = new Medusa({ baseUrl: "http://localhost:9000", maxRetries: 3 })
-    // medusa.regions.list()
-    //   .then(({ regions }) => {
-    //     console.log(regions);
-    //   });
-    // medusa.products.search()
-    return fetch('http://localhost:9000/store/products/search', {
+    const SEARCH_ENDPOINT='https://demo1-custom-search-api-eorit2dhbq-ew.a.run.app' // 'http://127.0.0.1:5000'
+    const SEARCH_API_KEY='customsearch123'
+    console.log(process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL)
+    return fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/products/search`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -72,14 +66,16 @@ export const searchClient = {
           query: query,
           options: {
             languageCode: languageCode,
-            nProductsToRetrieve: 20
+            nProductsToRetrieve: 20,
+            apiKey: SEARCH_API_KEY,
+            endpointURL: `${SEARCH_ENDPOINT}/search`
           }
         }
         ),
     }).then(async res => {
       let res_json = await res.json()
-      console.log(`Search response:`)
-      console.log(res_json)
+      // console.log(`Search response:`)
+      // console.log(res_json)
       return {
         results: [
           {
@@ -91,6 +87,7 @@ export const searchClient = {
   }
   ,
   async searchForFacetValues(requests: any) { // Doesnt currently have any effect. Not sure if supported.
+    // Probably need to have this method in the custom search endpoint
     console.log("--------- FULL FACET VALUES REQUEST --------")
     console.log(requests)
     return fetch('http://localhost:3000/sffv', {
