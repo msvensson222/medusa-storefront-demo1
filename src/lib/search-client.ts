@@ -85,19 +85,19 @@ export const searchClient = {
       };
     });
   }
-  ,
-  async searchForFacetValues(requests: any) { // Doesnt currently have any effect. Not sure if supported.
-    // Probably need to have this method in the custom search endpoint
-    console.log("--------- FULL FACET VALUES REQUEST --------")
-    console.log(requests)
-    return fetch('http://localhost:3000/sffv', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ requests }),
-    }).then(res => res.json());
-  }
+  //,
+  //async searchForFacetValues(requests: any) { // Doesnt currently have any effect. Not sure if supported.
+  //  // Probably need to have this method in the custom search endpoint
+  //  console.log("--------- FULL FACET VALUES REQUEST --------")
+  //  console.log(requests)
+  //  return fetch('http://localhost:3000/sffv', {
+  //    method: 'post',
+  //    headers: {
+  //      'Content-Type': 'application/json',
+  //    },
+  //    body: JSON.stringify({ requests }),
+  //  }).then(res => res.json());
+  //}
 };
 
 
