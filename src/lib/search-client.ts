@@ -7,12 +7,16 @@ import { useStore } from "./context/store-context";
 import CountryMenu from "@modules/mobile-menu/components/country-menu";
 import CountrySelect from "@modules/layout/components/country-select"
 import { useRegions } from "medusa-react"
-import { SearchRequest } from "meilisearch";
+import { SearchRequest, SearchResponse } from "meilisearch";
+import { instantMeiliSearch, InstantMeiliSearchInstance } from "@meilisearch/instant-meilisearch"
+
+import Search from "@modules/common/icons/search";
 // import { SearchClient, InstantSearch } from 'instantsearch.js'
 
-export const searchClient = {
-  async search(requests: any) { // Any??
+export const searchClient: InstantMeiliSearchInstance = {
+  search(requests: any) { // TODO: Add SearchRequest / SearchResponse, and try running yarn build
     // console.log(`Full search request: ${requests}`)
+
     let query = requests[0].params.query
     // console.log(`Query: ${query}`)
     const json_region = localStorage.getItem("medusa_region")
@@ -55,6 +59,7 @@ export const searchClient = {
 
     const SEARCH_ENDPOINT='https://demo1-custom-search-api-eorit2dhbq-ew.a.run.app' // 'http://127.0.0.1:5000'
     const SEARCH_API_KEY='customsearch123'
+    const nProductsToRetrieve=20
     console.log(process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL)
     return fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/products/search`, {
       method: 'post',
@@ -67,7 +72,7 @@ export const searchClient = {
           query: query,
           options: {
             languageCode: languageCode,
-            nProductsToRetrieve: 20,
+            nProductsToRetrieve: nProductsToRetrieve,
             apiKey: SEARCH_API_KEY,
             endpointURL: `${SEARCH_ENDPOINT}/search`
           }
@@ -80,35 +85,32 @@ export const searchClient = {
       return {
         results: [
           {
-            hits: res_json.hits
+            hits: res_json.hits,
+            nbHits: nProductsToRetrieve,
+            page: 0,
+            nbPages: 1,
+            hitsPerPage: nProductsToRetrieve,
+            processingTimeMS: 1,
+            exhaustiveNbHits: true,
+            query: query,
+            params: ""
           }
         ]
       };
     });
   }
   ,
-  async searchForFacetValues(requests: any) { // Doesnt currently have any effect. Not sure if supported.
+  searchForFacetValues: async function (_: any) { // Doesnt currently have any effect. Not sure if supported.
     // Probably need to have this method in the custom search endpoint
-    console.log("--------- FULL FACET VALUES REQUEST --------")
-    console.log(requests)
-    return fetch('http://localhost:3000/sffv', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ requests }),
-    }).then(async res => {
-      let res_json = await res.json()
-      // console.log(`Search response:`)
-      // console.log(res_json)
-      return {
-        results: [
-          {
-            hits: res_json.hits
-          }
-        ]
-      };
-    });
+    // Should return SearchForFacetValuesResponse
+    // console.log("--------- FULL FACET VALUES REQUEST --------")
+    // console.log(requests)
+    return await new Promise((resolve, reject) => {
+      reject(
+        new Error('SearchForFacetValues is not compatible with custom Meilisearch')
+      )
+      resolve([]) // added here to avoid compilation error
+    })
   }
 };
 
