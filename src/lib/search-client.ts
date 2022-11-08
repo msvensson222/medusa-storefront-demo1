@@ -7,6 +7,7 @@ import { useStore } from "./context/store-context";
 import CountryMenu from "@modules/mobile-menu/components/country-menu";
 import CountrySelect from "@modules/layout/components/country-select"
 import { useRegions } from "medusa-react"
+import { SearchRequest } from "meilisearch";
 // import { SearchClient, InstantSearch } from 'instantsearch.js'
 
 export const searchClient = {
@@ -85,19 +86,30 @@ export const searchClient = {
       };
     });
   }
-  //,
-  //async searchForFacetValues(requests: any) { // Doesnt currently have any effect. Not sure if supported.
-  //  // Probably need to have this method in the custom search endpoint
-  //  console.log("--------- FULL FACET VALUES REQUEST --------")
-  //  console.log(requests)
-  //  return fetch('http://localhost:3000/sffv', {
-  //    method: 'post',
-  //    headers: {
-  //      'Content-Type': 'application/json',
-  //    },
-  //    body: JSON.stringify({ requests }),
-  //  }).then(res => res.json());
-  //}
+  ,
+  async searchForFacetValues(requests: any) { // Doesnt currently have any effect. Not sure if supported.
+    // Probably need to have this method in the custom search endpoint
+    console.log("--------- FULL FACET VALUES REQUEST --------")
+    console.log(requests)
+    return fetch('http://localhost:3000/sffv', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ requests }),
+    }).then(async res => {
+      let res_json = await res.json()
+      // console.log(`Search response:`)
+      // console.log(res_json)
+      return {
+        results: [
+          {
+            hits: res_json.hits
+          }
+        ]
+      };
+    });
+  }
 };
 
 
