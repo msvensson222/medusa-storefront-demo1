@@ -109,7 +109,8 @@ export const StoreProvider = ({ children }: StoreProps) => {
     if (!IS_SERVER) {
       const { regionId, countryCode } = getRegion() || {
         regionId: region.id,
-        countryCode: region.countries[0].iso_2,
+        countryCode: 'gb',
+        // countryCode: region.countries[0].iso_2,
       }
 
       if (regionId !== region.id) {
