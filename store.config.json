@@ -1,6 +1,5 @@
 {
   "features": {
-    "search": true,
-    "sffv": true
+    "search": true
   }
 }
