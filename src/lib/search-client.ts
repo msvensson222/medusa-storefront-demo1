@@ -15,6 +15,7 @@ import Search from "@modules/common/icons/search";
 export const searchClient: InstantMeiliSearchInstance = {
   search(requests: any) {
     let query = requests[0].params.query
+    console.log("TESTING - VERSION 147")
     const json_region = localStorage.getItem("medusa_region")
     let region: any
     if (json_region) {
