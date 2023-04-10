@@ -54,7 +54,18 @@ export const searchClient: InstantMeiliSearchInstance = {
     const SEARCH_ENDPOINT=process.env.SEARCH_ENDPOINT
     const SEARCH_API_KEY=process.env.SEARCH_API_KEY
     const nProductsToRetrieve=20
-
+    console.log(JSON.stringify(
+      { 
+        indexName: "",
+        query: query,
+        options: {
+          languageCode: languageCode,
+          nProductsToRetrieve: nProductsToRetrieve,
+          apiKey: SEARCH_API_KEY,
+          endpointURL: `${SEARCH_ENDPOINT}/search`
+        }
+      }
+      ))
     return fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/products/search`, {
       method: 'post',
       headers: {
