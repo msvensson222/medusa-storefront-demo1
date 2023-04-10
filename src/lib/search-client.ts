@@ -15,7 +15,6 @@ import Search from "@modules/common/icons/search";
 export const searchClient: InstantMeiliSearchInstance = {
   search(requests: any) {
     let query = requests[0].params.query
-    console.log("TESTING - VERSION 147")
     const json_region = localStorage.getItem("medusa_region")
     let region: any
     if (json_region) {
@@ -51,21 +50,9 @@ export const searchClient: InstantMeiliSearchInstance = {
         languageCode = 'en'
     }
 
-    const SEARCH_ENDPOINT=process.env.SEARCH_ENDPOINT
-    const SEARCH_API_KEY=process.env.SEARCH_API_KEY
+    const SEARCH_ENDPOINT='https://demo1-custom-search-api-eorit2dhbq-ew.a.run.app'
+    const SEARCH_API_KEY='customsearch123' // Not best practice...
     const nProductsToRetrieve=20
-    console.log(JSON.stringify(
-      { 
-        indexName: "",
-        query: query,
-        options: {
-          languageCode: languageCode,
-          nProductsToRetrieve: nProductsToRetrieve,
-          apiKey: SEARCH_API_KEY,
-          endpointURL: `${SEARCH_ENDPOINT}/search`
-        }
-      }
-      ))
     return fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/products/search`, {
       method: 'post',
       headers: {
